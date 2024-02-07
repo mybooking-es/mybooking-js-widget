@@ -25,7 +25,7 @@ function MybookingWidget() {
       this.engineUrl = widgetScript.getAttribute('data-url');
       this.enginePromotionCode = widgetScript.getAttribute('data-promotion-code');
       this.engineAgentId = widgetScript.getAttribute('data-agent-id');
-      if (widgetScript.getAttribute('data-load-jquery') == 'false') {
+      if (widgetScript.getAttribute('data-load-jquery') === 'false') {
         this.engineLoadJQuery = false;
         this.totalScripts = this.totalScripts - 1;
       }
@@ -37,11 +37,12 @@ function MybookingWidget() {
       if (this.engineLoadJQuery) {
         this.scriptJQuery = document.createElement("script");
         this.scriptJQuery.src = this.jQuery;    
-      }
+      } 
       // Load iFrameResizer
       var self = this;
       this.scriptResizer = document.createElement("script");
       this.scriptResizer.src = this.iframeResizer;
+      // Scripts loaded
       if (this.engineLoadJQuery) {
         this.scriptJQuery.addEventListener('load', function(){
           self.scriptsLoaded();
