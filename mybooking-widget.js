@@ -16,7 +16,6 @@ function MybookingWidget() {
    * Initialize
    */
   this.init = function() {
-    console.log('mybooking-es init');
     // Get the iframe information
     var widgetScript = document.getElementById('js-mybooking');
 
@@ -63,7 +62,6 @@ function MybookingWidget() {
    * Create the iframe
    */
   this.createIframe = function() {
-    console.log('createIframe');
     var url = `${this.engineUrl}/?promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
     // Create the iframe
     var iframe = document.createElement("iframe");
@@ -82,7 +80,6 @@ function MybookingWidget() {
   }
 }
 document.addEventListener("DOMContentLoaded", function() {
-  console.log('mybooking-es document loaded');
   var mybookingWidget = new MybookingWidget();
   mybookingWidget.init();
 });
