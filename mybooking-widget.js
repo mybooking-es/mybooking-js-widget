@@ -4,6 +4,7 @@ function MybookingWidget() {
   this.engineUrl = null;
   this.enginePromotionCode = null;
   this.engineAgentId = null;
+  this.engineLoadJQuery = true;
   this.dataContainer = "mybooking_widget_container";
   this.jQuery = "https://code.jquery.com/jquery-3.7.1.min.js";
   this.iframeResizer = "https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.9/js/iframeResizer.min.js";
@@ -24,24 +25,32 @@ function MybookingWidget() {
       this.engineUrl = widgetScript.getAttribute('data-url');
       this.enginePromotionCode = widgetScript.getAttribute('data-promotion-code');
       this.engineAgentId = widgetScript.getAttribute('data-agent-id');
+      if (widgetScript.getAttribute('data-load-jquery') == 'false') {
+        this.engineLoadJQuery = false;
+        this.totalScripts = this.totalScripts - 1;
+      }
     }
 
     // Load the scripts
     if (widgetScript && this.engineUrl && this.engineUrl != '') {
       // Load jQuery
-      this.scriptJQuery = document.createElement("script");
-      this.scriptJQuery.src = this.jQuery;    
+      if (this.engineLoadJQuery) {
+        this.scriptJQuery = document.createElement("script");
+        this.scriptJQuery.src = this.jQuery;    
+      }
       // Load iFrameResizer
       var self = this;
       this.scriptResizer = document.createElement("script");
       this.scriptResizer.src = this.iframeResizer;
-      this.scriptJQuery.addEventListener('load', function(){
-        self.scriptsLoaded();
-      }); 
+      if (this.engineLoadJQuery) {
+        this.scriptJQuery.addEventListener('load', function(){
+          self.scriptsLoaded();
+        }); 
+        document.body.appendChild(this.scriptJQuery);
+      }
       this.scriptResizer.addEventListener('load', function(){
         self.scriptsLoaded();
       });
-      document.body.appendChild(this.scriptJQuery);
       document.body.appendChild(this.scriptResizer);
     }
 
