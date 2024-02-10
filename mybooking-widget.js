@@ -23,6 +23,7 @@ function MybookingWidget() {
     // Extract the information from the script
     if (widgetScript) {
       this.engineUrl = widgetScript.getAttribute('data-url');
+      this.engineCompany = widgetScript.getAttribute('data-company');
       this.enginePromotionCode = widgetScript.getAttribute('data-promotion-code');
       this.engineAgentId = widgetScript.getAttribute('data-agent-id');
       if (widgetScript.getAttribute('data-load-jquery') === 'false') {
@@ -32,7 +33,8 @@ function MybookingWidget() {
     }
 
     // Load the scripts
-    if (widgetScript && this.engineUrl && this.engineUrl != '') {
+    if (widgetScript && 
+       ((this.engineUrl && this.engineUrl != '') || (this.engineCompany && this.engineCompany != ''))) {
       // Load jQuery
       if (this.engineLoadJQuery) {
         this.scriptJQuery = document.createElement("script");
@@ -72,7 +74,13 @@ function MybookingWidget() {
    * Create the iframe
    */
   this.createIframe = function() {
-    var url = `${this.engineUrl}/?promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
+    if (this.engineUrl && this.engineUrl != '') {
+      var url = `${this.engineUrl}/?promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
+    }
+    else if (this.engineCompany && this.engineCompany != '') {
+      var prefix = atob('aHR0cHM6Ly93aWRnZXQubXlib29raW5nLmRldg==');
+      var url = `${prefix}/?widget=true&company=${this.engineCompany}&promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
+    }
     // Create the iframe
     var iframe = document.createElement("iframe");
     iframe.src = url;
