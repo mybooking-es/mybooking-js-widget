@@ -101,7 +101,20 @@ function MybookingWidget() {
    */
   this.createIframe = function() {
     if (this.engineUrl && this.engineUrl != '') {
-      var url = `${this.engineUrl}/?promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
+      var urlParams = [];
+      if (typeof this.enginePromotionCode !== 'undefined' && 
+          this.enginePromotionCode !== null && this.enginePromotionCode !== '') {
+        urlParams.push(`promotionCode=${this.enginePromotionCode}`);
+      }
+      if (typeof this.engineAgentId !== 'undefined' && 
+          this.engineAgentId !== null && this.engineAgentId != '') {
+        urlParams.push(`agentId=${this.engineAgentId}`);
+      }
+      var params = '';
+      if (urlParams.length > 0) { 
+        params = '?'+urlParams.join('&');
+      }      
+      var url = `${this.engineUrl}${params}`;
     }
     else if (this.engineCompany && this.engineCompany != '') {
       var prefix = atob('aHR0cHM6Ly93aWRnZXQubXlib29raW5nLmRldg==');
