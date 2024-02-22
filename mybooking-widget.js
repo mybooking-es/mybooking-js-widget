@@ -22,6 +22,7 @@ function MybookingWidget() {
 
     // Extract the information from the script
     if (widgetScript) {
+      // Extract the information from the Widget Script
       this.engineUrl = widgetScript.getAttribute('data-url');
       this.engineCompany = widgetScript.getAttribute('data-company');
       this.enginePromotionCode = widgetScript.getAttribute('data-promotion-code');
@@ -30,6 +31,16 @@ function MybookingWidget() {
         this.engineLoadJQuery = false;
         this.totalScripts = this.totalScripts - 1;
       }
+
+      // Extract the information from the URL
+      var urlVars = this.getUrlVars();
+      if (urlVars['promotionCode']) {
+        this.enginePromotionCode = urlVars['promotionCode'];
+      }
+      if (urlVars['agentId']) {
+        this.engineAgentId = urlVars['agentId'];
+      }
+
     }
 
     // Load the scripts
@@ -60,6 +71,21 @@ function MybookingWidget() {
   }
 
   /**
+   * 
+   * @returns Get the URL parameters
+   */
+  this.getUrlVars = function() {
+    var vars = [], hash;
+    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+    for(var i = 0; i < hashes.length; i++) {
+      hash = hashes[i].split('=');
+      vars.push(hash[0]);
+      vars[hash[0]] = hash[1];
+    }
+    return vars;
+  }
+
+  /**
    * Scripts loaded
    */
   this.scriptsLoaded = function() {
@@ -79,7 +105,18 @@ function MybookingWidget() {
     }
     else if (this.engineCompany && this.engineCompany != '') {
       var prefix = atob('aHR0cHM6Ly93aWRnZXQubXlib29raW5nLmRldg==');
-      var url = `${prefix}/?widget=true&company=${this.engineCompany}&promotionCode=${this.enginePromotionCode}&agentId=${this.engineAgentId}`;
+      var urlParams = [];
+      if (typeof this.enginePromotionCode !== 'undefined' && this.enginePromotionCode != '') {
+        urlParams.push(`promotionCode=${this.enginePromotionCode}`);
+      }
+      if (typeof this.engineAgentId !== 'undefined' && this.engineAgentId != '') {
+        urlParams.push(`agentId=${this.engineAgentId}`);
+      }
+      var params = '';
+      if (urlParams.length > 0) { 
+        params = '&'+urlParams.join('&');
+      }
+      var url = `${prefix}/?widget=true&company=${this.engineCompany}${params}`;
     }
     // Create the iframe
     var iframe = document.createElement("iframe");
