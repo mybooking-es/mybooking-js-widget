@@ -106,10 +106,12 @@ function MybookingWidget() {
     else if (this.engineCompany && this.engineCompany != '') {
       var prefix = atob('aHR0cHM6Ly93aWRnZXQubXlib29raW5nLmRldg==');
       var urlParams = [];
-      if (typeof this.enginePromotionCode !== 'undefined' && this.enginePromotionCode != '') {
+      if (typeof this.enginePromotionCode !== 'undefined' && 
+          this.enginePromotionCode !== null && this.enginePromotionCode !== '') {
         urlParams.push(`promotionCode=${this.enginePromotionCode}`);
       }
-      if (typeof this.engineAgentId !== 'undefined' && this.engineAgentId != '') {
+      if (typeof this.engineAgentId !== 'undefined' && 
+          this.engineAgentId !== null && this.engineAgentId != '') {
         urlParams.push(`agentId=${this.engineAgentId}`);
       }
       var params = '';
