@@ -34,7 +34,12 @@ function MybookingWidget() {
 
       // Extract the information from the URL
       var urlVars = this.getUrlVars();
-      if (urlVars['promotionCode']) {
+      if (urlVars['promo'] && urlVars['promo'] !== '') {
+        // Use the URL parameter promo (as an alternative for promotionCode)
+        this.enginePromotionCode = urlVars['promo'];
+      }
+      else if (urlVars['promotionCode']) {
+        // Use the URL parameter promotionCode
         this.enginePromotionCode = urlVars['promotionCode'];
       }
       if (urlVars['agentId']) {
